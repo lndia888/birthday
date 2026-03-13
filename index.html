@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Happy Birthday Wifey</title>
+<title>Birthday Surprise</title>
 
 <style>
 
@@ -13,10 +13,9 @@ background:linear-gradient(45deg,#ff416c,#ff4b2b);
 color:white;
 height:100vh;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-flex-direction:column;
-overflow:hidden;
 }
 
 button{
@@ -35,10 +34,9 @@ margin-top:20px;
 }
 
 .photo{
-width:230px;
+width:220px;
 border-radius:20px;
 margin-top:20px;
-box-shadow:0 0 20px white;
 }
 
 .cake{
@@ -52,26 +50,14 @@ animation:bounce 1s infinite;
 100%{transform:translateY(0)}
 }
 
-#text{
-font-size:26px;
-margin-top:15px;
-}
-
-.firework{
-position:fixed;
-width:6px;
-height:6px;
-border-radius:50%;
-}
-
 </style>
 </head>
 
 <body>
 
-<h1>🎁 Surprise 🎁</h1>
+<h1>🎁 Surprise Wifey 🎁</h1>
 
-<button onclick="start()">Click Here</button>
+<button id="btn">Click Here</button>
 
 <div id="message">
 
@@ -79,29 +65,7 @@ border-radius:50%;
 
 <img src="photo.png" class="photo">
 
-<div id="text"></div>
-
-</div>
-
-<audio id="song" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=happy-birthday-to-you-12288.mp3">
-</audio>
-
-<script>
-
-function start(){
-
-document.getElementById("message").style.display="block";
-
-document.getElementById("song").play();
-
-typeMessage();
-
-setInterval(fireworks,800);
-
-}
-
-let msg=" 🎉 Happy Birthday Happy Birthday meri jaan ❤️
+<h2>Happy Birthday Wifey meri jaan ❤️
 Agar tum ye message padh rahi ho to samajh lo ki meri zindagi ki sabse special person ka aaj birthday hai.
 Tum meri life ki sabse pyari khushi ho. Tumhare saath har din aur bhi beautiful lagta hai.
 Thank you meri life me itna pyaar, care aur happiness lane ke liye.
@@ -109,67 +73,42 @@ Main hamesha tumhara khayal rakhne ki koshish karunga.
 Bhagwaan se bas itni dua hai ki tum hamesha khush raho, kyunki tumhari smile meri duniya hai.
 I love you so much
 Tumhari life hamesha khushiyon se bhari rahe ✨  
-Aur tumhare saare sapne poore ho ❤️❤️ ❤️";
+Aur tumhare saare sapne poore ho ❤️❤️🎉</h2>
 
-let i=0;
+</div>
 
-function typeMessage(){
+<audio id="song">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=happy-birthday-to-you-12288.mp3">
+</audio>
 
-if(i<msg.length){
+<script>
 
-document.getElementById("text").innerHTML+=msg.charAt(i);
+document.getElementById("btn").addEventListener("click",function(){
 
-i++;
+document.getElementById("message").style.display="block";
 
-setTimeout(typeMessage,60);
+document.getElementById("song").play();
 
-}
+fireworks();
 
-}
+});
 
 function fireworks(){
 
-let colors=["red","yellow","orange","white","pink"];
-
 for(let i=0;i<40;i++){
 
-let spark=document.createElement("div");
+let f=document.createElement("div");
 
-spark.className="firework";
+f.style.position="fixed";
+f.style.width="8px";
+f.style.height="8px";
+f.style.background="yellow";
+f.style.left=Math.random()*window.innerWidth+"px";
+f.style.top=Math.random()*window.innerHeight+"px";
 
-spark.style.background=colors[Math.floor(Math.random()*colors.length)];
+document.body.appendChild(f);
 
-spark.style.left=window.innerWidth/2+"px";
-
-spark.style.top=window.innerHeight/2+"px";
-
-document.body.appendChild(spark);
-
-let angle=Math.random()*360;
-
-let speed=Math.random()*6+2;
-
-let x=0;
-let y=0;
-
-let move=setInterval(()=>{
-
-x+=Math.cos(angle)*speed;
-y+=Math.sin(angle)*speed;
-
-spark.style.transform=`translate(${x}px,${y}px)`;
-
-spark.style.opacity-=0.02;
-
-if(spark.style.opacity<=0){
-
-clearInterval(move);
-
-spark.remove();
-
-}
-
-},30);
+setTimeout(()=>{f.remove();},1000);
 
 }
 
