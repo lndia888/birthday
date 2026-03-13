@@ -4,26 +4,23 @@
 <title>Birthday Surprise</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
 text-align:center;
 background:linear-gradient(45deg,#ff416c,#ff4b2b);
 color:white;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
 overflow:hidden;
 }
 
-.container{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-}
-
 button{
-padding:15px 30px;
-font-size:20px;
+padding:15px 35px;
+font-size:22px;
 border:none;
 border-radius:10px;
 cursor:pointer;
@@ -31,46 +28,38 @@ background:white;
 color:#ff416c;
 }
 
+#message{
+display:none;
+margin-top:20px;
+}
+
 .photo{
-width:230px;
+width:220px;
 border-radius:20px;
 margin-top:20px;
 box-shadow:0 0 20px white;
 }
 
-#message{
-display:none;
-font-size:26px;
-margin-top:20px;
-}
-
 .cake{
-font-size:80px;
+font-size:70px;
 animation:bounce 1s infinite;
 }
 
 @keyframes bounce{
 0%{transform:translateY(0)}
-50%{transform:translateY(-20px)}
+50%{transform:translateY(-15px)}
 100%{transform:translateY(0)}
 }
 
-canvas{
-position:fixed;
-top:0;
-left:0;
-pointer-events:none;
+#text{
+font-size:26px;
+margin-top:15px;
 }
 
 </style>
-
 </head>
 
 <body>
-
-<canvas id="fireworks"></canvas>
-
-<div class="container">
 
 <h1>🎁 Surprise 🎁</h1>
 
@@ -80,83 +69,85 @@ pointer-events:none;
 
 <div class="cake">🎂</div>
 
-<img src="photo.png" class="photo">
+<img src="photo.jpg" class="photo">
 
-<h2 id="text"></h2>
-
-</div>
+<div id="text"></div>
 
 </div>
 
-<audio id="music" loop>
+<audio id="song">
 <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
 <script>
 
 function start(){
+
 document.getElementById("message").style.display="block";
-document.getElementById("music").play();
-typeText();
-startFireworks();
+
+document.getElementById("song").play();
+
+typeMessage();
+
+confetti();
+
 }
 
-let msg="Happy Birthday Happy Birthday meri jaan ❤️
-Agar tum ye message padh rahi ho to samajh lo ki meri zindagi ki sabse special person ka aaj birthday hai.
-Tum meri life ki sabse pyari khushi ho. Tumhare saath har din aur bhi beautiful lagta hai.
-Thank you meri life me itna pyaar, care aur happiness lane ke liye.
-Main hamesha tumhara khayal rakhne ki koshish karunga.
-Bhagwaan se bas itni dua hai ki tum hamesha khush raho, kyunki tumhari smile meri duniya hai.
-I love you so much
-Tumhari life hamesha khushiyon se bhari rahe ✨  
-Aur tumhare saare sapne poore ho ❤️❤️❤️";
+let msg="Happy Birthday 🎉 May your life be full of happiness and success ❤️";
+
 let i=0;
 
-function typeText(){
+function typeMessage(){
+
 if(i<msg.length){
+
 document.getElementById("text").innerHTML+=msg.charAt(i);
+
 i++;
-setTimeout(typeText,60);
-}
-}
 
-function startFireworks(){
+setTimeout(typeMessage,60);
 
-const canvas=document.getElementById("fireworks");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<80;i++){
-particles.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-size:Math.random()*5+1,
-speedX:Math.random()*3-1.5,
-speedY:Math.random()*3-1.5
-});
 }
 
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-particles.forEach(p=>{
-p.x+=p.speedX;
-p.y+=p.speedY;
-
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-ctx.fillStyle="yellow";
-ctx.fill();
-});
-
-requestAnimationFrame(animate);
 }
 
-animate();
+function confetti(){
+
+for(let i=0;i<40;i++){
+
+let conf=document.createElement("div");
+
+conf.style.position="fixed";
+
+conf.style.width="10px";
+
+conf.style.height="10px";
+
+conf.style.background="yellow";
+
+conf.style.left=Math.random()*window.innerWidth+"px";
+
+conf.style.top="-10px";
+
+conf.style.opacity="0.8";
+
+document.body.appendChild(conf);
+
+let fall=setInterval(()=>{
+
+conf.style.top=parseInt(conf.style.top)+5+"px";
+
+if(parseInt(conf.style.top)>window.innerHeight){
+
+clearInterval(fall);
+
+conf.remove();
+
+}
+
+},30);
+
+}
 
 }
 
