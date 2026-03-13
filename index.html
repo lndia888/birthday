@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Birthday Surprise</title>
+<title>Happy Birthday Wifey</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
@@ -34,7 +35,7 @@ margin-top:20px;
 }
 
 .photo{
-width:220px;
+width:230px;
 border-radius:20px;
 margin-top:20px;
 box-shadow:0 0 20px white;
@@ -56,6 +57,13 @@ font-size:26px;
 margin-top:15px;
 }
 
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+}
+
 </style>
 </head>
 
@@ -69,14 +77,14 @@ margin-top:15px;
 
 <div class="cake">🎂</div>
 
-<img src="photo.jpg" class="photo">
+<img src="photo.png" class="photo">
 
 <div id="text"></div>
 
 </div>
 
-<audio id="song">
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+<audio id="song" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=happy-birthday-to-you-12288.mp3">
 </audio>
 
 <script>
@@ -89,11 +97,19 @@ document.getElementById("song").play();
 
 typeMessage();
 
-confetti();
+setInterval(fireworks,800);
 
 }
 
-let msg="Happy Birthday 🎉 May your life be full of happiness and success ❤️";
+let msg=" 🎉 Happy Birthday Happy Birthday meri jaan ❤️
+Agar tum ye message padh rahi ho to samajh lo ki meri zindagi ki sabse special person ka aaj birthday hai.
+Tum meri life ki sabse pyari khushi ho. Tumhare saath har din aur bhi beautiful lagta hai.
+Thank you meri life me itna pyaar, care aur happiness lane ke liye.
+Main hamesha tumhara khayal rakhne ki koshish karunga.
+Bhagwaan se bas itni dua hai ki tum hamesha khush raho, kyunki tumhari smile meri duniya hai.
+I love you so much
+Tumhari life hamesha khushiyon se bhari rahe ✨  
+Aur tumhare saare sapne poore ho ❤️❤️ ❤️";
 
 let i=0;
 
@@ -111,37 +127,45 @@ setTimeout(typeMessage,60);
 
 }
 
-function confetti(){
+function fireworks(){
+
+let colors=["red","yellow","orange","white","pink"];
 
 for(let i=0;i<40;i++){
 
-let conf=document.createElement("div");
+let spark=document.createElement("div");
 
-conf.style.position="fixed";
+spark.className="firework";
 
-conf.style.width="10px";
+spark.style.background=colors[Math.floor(Math.random()*colors.length)];
 
-conf.style.height="10px";
+spark.style.left=window.innerWidth/2+"px";
 
-conf.style.background="yellow";
+spark.style.top=window.innerHeight/2+"px";
 
-conf.style.left=Math.random()*window.innerWidth+"px";
+document.body.appendChild(spark);
 
-conf.style.top="-10px";
+let angle=Math.random()*360;
 
-conf.style.opacity="0.8";
+let speed=Math.random()*6+2;
 
-document.body.appendChild(conf);
+let x=0;
+let y=0;
 
-let fall=setInterval(()=>{
+let move=setInterval(()=>{
 
-conf.style.top=parseInt(conf.style.top)+5+"px";
+x+=Math.cos(angle)*speed;
+y+=Math.sin(angle)*speed;
 
-if(parseInt(conf.style.top)>window.innerHeight){
+spark.style.transform=`translate(${x}px,${y}px)`;
 
-clearInterval(fall);
+spark.style.opacity-=0.02;
 
-conf.remove();
+if(spark.style.opacity<=0){
+
+clearInterval(move);
+
+spark.remove();
 
 }
 
