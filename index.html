@@ -11,11 +11,14 @@ font-family:Arial;
 text-align:center;
 background:linear-gradient(45deg,#ff416c,#ff4b2b);
 color:white;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+overflow:hidden;
+}
+
+.container{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 }
 
 button{
@@ -28,17 +31,35 @@ background:white;
 color:#ff416c;
 }
 
-#message{
-display:none;
-margin-top:20px;
-font-size:24px;
-}
-
 .photo{
 width:230px;
 border-radius:20px;
 margin-top:20px;
 box-shadow:0 0 20px white;
+}
+
+#message{
+display:none;
+font-size:26px;
+margin-top:20px;
+}
+
+.cake{
+font-size:80px;
+animation:bounce 1s infinite;
+}
+
+@keyframes bounce{
+0%{transform:translateY(0)}
+50%{transform:translateY(-20px)}
+100%{transform:translateY(0)}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
 }
 
 </style>
@@ -47,17 +68,40 @@ box-shadow:0 0 20px white;
 
 <body>
 
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+
 <h1>🎁 Surprise 🎁</h1>
 
-<button onclick="showMessage()">Click Here</button>
+<button onclick="start()">Click Here</button>
 
 <div id="message">
 
-<h2>🎂 Happy Birthday 🎂</h2>
+<div class="cake">🎂</div>
 
 <img src="photo.png" class="photo">
 
-<p>Happy Birthday Happy Birthday meri jaan ❤️
+<h2 id="text"></h2>
+
+</div>
+
+</div>
+
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<script>
+
+function start(){
+document.getElementById("message").style.display="block";
+document.getElementById("music").play();
+typeText();
+startFireworks();
+}
+
+let msg="Happy Birthday Happy Birthday meri jaan ❤️
 Agar tum ye message padh rahi ho to samajh lo ki meri zindagi ki sabse special person ka aaj birthday hai.
 Tum meri life ki sabse pyari khushi ho. Tumhare saath har din aur bhi beautiful lagta hai.
 Thank you meri life me itna pyaar, care aur happiness lane ke liye.
@@ -65,14 +109,55 @@ Main hamesha tumhara khayal rakhne ki koshish karunga.
 Bhagwaan se bas itni dua hai ki tum hamesha khush raho, kyunki tumhari smile meri duniya hai.
 I love you so much
 Tumhari life hamesha khushiyon se bhari rahe ✨  
-Aur tumhare saare sapne poore ho ❤️❤️❤️</p>
+Aur tumhare saare sapne poore ho ❤️❤️❤️";
+let i=0;
 
-</div>
+function typeText(){
+if(i<msg.length){
+document.getElementById("text").innerHTML+=msg.charAt(i);
+i++;
+setTimeout(typeText,60);
+}
+}
 
-<script>
+function startFireworks(){
 
-function showMessage(){
-document.getElementById("message").style.display="block";
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+for(let i=0;i<80;i++){
+particles.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*5+1,
+speedX:Math.random()*3-1.5,
+speedY:Math.random()*3-1.5
+});
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach(p=>{
+p.x+=p.speedX;
+p.y+=p.speedY;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+ctx.fillStyle="yellow";
+ctx.fill();
+});
+
+requestAnimationFrame(animate);
+}
+
+animate();
+
 }
 
 </script>
